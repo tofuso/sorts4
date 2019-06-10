@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/tofuso/sorts4/sorts"
 )
@@ -40,7 +41,9 @@ func main() {
 		keys = append(keys, num)
 	}
 	fmt.Println("元の配列: " + showArray(keys))
-	fmt.Println("要素数: "+strconv.Itoa(len(keys)))
+	fmt.Println("要素数: " + strconv.Itoa(len(keys)))
+
+	var start, end time.Time // 実行時間測定
 	insertionKeys := make([]int, len(keys))
 	mergeKeys := make([]int, len(keys))
 	heapKeys := make([]int, len(keys))
@@ -51,16 +54,39 @@ func main() {
 	copy(quickKeys, keys)
 
 	if *flaginsertion {
-		sorts.InsertionSort(&insertionKeys)
+		start = time.Now() // 測定開始
+		sorts.InsertionSort(insertionKeys)
+		end = time.Now() // 測定終了
+		fmt.Println("insertion sort:")
+		fmt.Println(showArray(insertionKeys))
+		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
+		fmt.Println()
 	}
 	if *flagmerge {
-		sorts.MergeSort(&mergeKeys)
+		start = time.Now() // 測定開始
+		sorts.MergeSort(mergeKeys)
+		end = time.Now() // 測定終了
+		fmt.Println("merge sort:")
+		fmt.Println(showArray(mergeKeys))
+		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
+		fmt.Println()
 	}
 	if *flagheap {
-		sorts.HeapSort(&heapKeys)
+		start = time.Now() // 測定開始
+		sorts.HeapSort(heapKeys)
+		end = time.Now() // 測定終了
+		fmt.Println("heap sort:")
+		fmt.Println(showArray(heapKeys))
+		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
+		fmt.Println()
 	}
 	if *flagquick {
-		sorts.QuickSort(&quickKeys)
+		start = time.Now() // 測定開始
+		sorts.QuickSort(quickKeys)
+		end = time.Now() // 測定終了
+		fmt.Println("quick sort:")
+		fmt.Println(showArray(quickKeys))
+		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
 	}
 	return
 }

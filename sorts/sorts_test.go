@@ -26,3 +26,12 @@ func TestMergeSort(t *testing.T) {
 		}
 	}
 }
+
+func TestHeapSort(t *testing.T){
+	HeapSort(numbers)
+	for i, num := range numbers {
+		if num != correct[i] {
+			t.Fatal("not correct: ", numbers, correct)
+		}
+	}
+}

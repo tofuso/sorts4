@@ -60,7 +60,69 @@ func merge(a []int, p, q, r int) {
 
 // HeapSort ヒープソート
 func HeapSort(a []int) {
+	h := buildMaxHeap(a)	// heapを構成
+	for i:= len(a)-1; i>=1; i--{
+		h.swap(0, i)	// Maxヒープの根は最大値なので、最後尾と交換しつつ、順にヒープの大きさを縮めると昇順ソートが可能
+		h.HeapSize--	// 後ろに現ヒープ内での最大値を持ってきたのでヒープサイズを一つ狭める
+		h.maxHeapify(0)	// ヒープの根をから順にMaxヒープを再構成
+	}
 	return
+}
+
+type heap struct {
+	a        []int // heapの実態
+	HeapSize int   // ヒープの大きさ（ヒープ最後尾のインデックス値）
+}
+
+// 指定されたノードの親ノードを返す
+func (h *heap) parent(i int) int {
+	return (i - 1) / 2
+}
+
+// 指定された親ノードの左ノードを返す
+func (h *heap) left(i int) int {
+	return 2*i + 1
+}
+
+// 指定された親ノードの右ノードを返す
+func (h *heap) right(i int) int {
+	return 2*i + 2
+}
+
+// 指定されたノードを根とする二分木をmax-heapとなるように構成する
+func (h *heap) maxHeapify(i int) {
+	var largest int // 左右ノードもしくは親ノードのうち最も大きなノードのインデックス値
+	l := h.left(i)
+	r := h.right(i)
+	if l <= h.HeapSize && h.a[l] > h.a[i] {
+		largest = l // 親と左側では左側のほうが要素が大きい
+	} else {
+		largest = i
+	}
+	if r <= h.HeapSize && h.a[r] > h.a[largest] {
+		largest = r // 親もしくは左側よりも右側のほうが大きい
+	}
+	if largest != i { // 親ノードよりも左右ノードのほうが大きいときは再帰
+		h.swap(i, largest)
+		h.maxHeapify(largest)
+	}
+}
+
+// ヒープ内の要素を交換する
+func(h *heap)swap(i, j int){
+	tmp := h.a[i]
+	h.a[i] = h.a[j]
+	h.a[j] = tmp
+}
+
+func buildMaxHeap(a []int) heap {
+	h := heap{}
+	h.a = a
+	h.HeapSize = len(a) - 1 // ヒープの最後尾を指定（配列の最後尾）
+	for i := (h.HeapSize - 1) / 2; i >= 0; i-- {	// ヒープ最後尾の親ノードから順にmax-heapifyを掛けていってMaxヒープを構成
+		h.maxHeapify(i)
+	}
+	return h
 }
 
 // QuickSort クイックソート

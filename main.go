@@ -14,10 +14,11 @@ import (
 func main() {
 	var (
 		fn            = flag.String("file", "", "ソート対象を記述したファイルを指定する。")
-		flaginsertion = flag.Bool("i", false, "insertion sortを実行します。")
-		flagmerge     = flag.Bool("m", false, "merge sortを実行します。")
-		flagheap      = flag.Bool("h", false, "heap sortを実行します。")
-		flagquick     = flag.Bool("q", false, "quick sortを実行します。")
+		flagview      = flag.Bool("view", false, "ソートの実行結果を表示します。")
+		flaginsertion = flag.Bool("insertion", false, "insertion sortを実行します。")
+		flagmerge     = flag.Bool("merge", false, "merge sortを実行します。")
+		flagheap      = flag.Bool("heap", false, "heap sortを実行します。")
+		flagquick     = flag.Bool("quick", false, "quick sortを実行します。")
 	)
 	flag.Parse()
 
@@ -40,7 +41,9 @@ func main() {
 		}
 		keys = append(keys, num)
 	}
-	fmt.Println("元の配列: " + showArray(keys))
+	if *flagview {
+		fmt.Println("元の配列: " + showArray(keys))
+	}
 	fmt.Println("要素数: " + strconv.Itoa(len(keys)))
 
 	var start, end time.Time // 実行時間測定
@@ -53,12 +56,15 @@ func main() {
 	copy(heapKeys, keys)
 	copy(quickKeys, keys)
 
+	// 各ソートアルゴリズムで実行した結果を表示する
 	if *flaginsertion {
 		start = time.Now() // 測定開始
 		sorts.InsertionSort(insertionKeys)
 		end = time.Now() // 測定終了
 		fmt.Println("insertion sort:")
-		fmt.Println(showArray(insertionKeys))
+		if *flagview {
+			fmt.Println(showArray(insertionKeys))
+		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
 		fmt.Println()
 	}
@@ -67,7 +73,9 @@ func main() {
 		sorts.MergeSort(mergeKeys)
 		end = time.Now() // 測定終了
 		fmt.Println("merge sort:")
-		fmt.Println(showArray(mergeKeys))
+		if *flagview {
+			fmt.Println(showArray(mergeKeys))
+		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
 		fmt.Println()
 	}
@@ -76,7 +84,9 @@ func main() {
 		sorts.HeapSort(heapKeys)
 		end = time.Now() // 測定終了
 		fmt.Println("heap sort:")
-		fmt.Println(showArray(heapKeys))
+		if *flagview {
+			fmt.Println(showArray(heapKeys))
+		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
 		fmt.Println()
 	}
@@ -85,7 +95,9 @@ func main() {
 		sorts.QuickSort(quickKeys)
 		end = time.Now() // 測定終了
 		fmt.Println("quick sort:")
-		fmt.Println(showArray(quickKeys))
+		if *flagview {
+			fmt.Println(showArray(quickKeys))
+		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
 	}
 	return

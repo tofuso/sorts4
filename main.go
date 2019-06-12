@@ -66,7 +66,6 @@ func main() {
 			fmt.Println(showArray(insertionKeys))
 		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
-		fmt.Println()
 	}
 	if *flagmerge {
 		start = time.Now() // 測定開始
@@ -77,7 +76,6 @@ func main() {
 			fmt.Println(showArray(mergeKeys))
 		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
-		fmt.Println()
 	}
 	if *flagheap {
 		start = time.Now() // 測定開始
@@ -88,7 +86,6 @@ func main() {
 			fmt.Println(showArray(heapKeys))
 		}
 		fmt.Println("実行時間: ", end.Sub(start).Seconds()*1000, "ms")
-		fmt.Println()
 	}
 	if *flagquick {
 		start = time.Now() // 測定開始
